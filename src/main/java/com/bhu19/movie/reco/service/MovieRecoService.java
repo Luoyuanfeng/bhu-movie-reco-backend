@@ -39,7 +39,7 @@ public class MovieRecoService {
         log.info("[history] custId={}", custId);
         List<MovieRatePO> rates = movieRateDAO.selectByCustId(custId);
         Assert.isTrue(!CollectionUtils.isEmpty(rates), "movieRateDAO.selectByCustId返回为空");
-        List<Integer> ids = rates.stream().map(MovieRatePO::getMovieId).collect(Collectors.toList());
+        List<Integer> ids = rates.stream().map(MovieRatePO::getMovieId).distinct().collect(Collectors.toList());
         List<MovieInfoPO> movies = movieInfoDAO.selectByIdBatch(ids);
         log.info("[history] final movies={}", JSON.toJSONString(movies));
         return movies;
