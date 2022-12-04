@@ -1,63 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bhu19.movie.reco.persistance.dao.MovieInfoDAO">
-  <resultMap id="BaseResultMap" type="com.bhu19.movie.reco.model.po.MovieInfoPO">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="movie_name" jdbcType="VARCHAR" property="movieName" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+<mapper namespace="com.bhu19.movie.reco.dao.MovieInfoDAO">
+  <resultMap id="BaseResultMap" type="com.bhu19.movie.reco.model.MovieInfoPO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="name" jdbcType="LONGVARCHAR" property="name" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, movie_name, create_time
+    id, `year`, `name`
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from movie_info
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectByIdBatch" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from movie_info
+    where id in
+    <foreach collection="ids" separator="," open="(" close=")" item="id">
+      #{id,jdbcType=INTEGER}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from movie_info
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.po.MovieInfoPO" useGeneratedKeys="true">
-    insert into movie_info (movie_name, create_time)
-    values (#{movieName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.MovieInfoPO" useGeneratedKeys="true">
+    insert into movie_info (`year`, `name`)
+    values (#{year,jdbcType=INTEGER}, #{name,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.po.MovieInfoPO" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.MovieInfoPO" useGeneratedKeys="true">
     insert into movie_info
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="movieName != null">
-        movie_name,
+      <if test="year != null">
+        `year`,
       </if>
-      <if test="createTime != null">
-        create_time,
+      <if test="name != null">
+        `name`,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="movieName != null">
-        #{movieName,jdbcType=VARCHAR},
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        #{name,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bhu19.movie.reco.model.po.MovieInfoPO">
+  <update id="updateByPrimaryKeySelective" parameterType="com.bhu19.movie.reco.model.MovieInfoPO">
     update movie_info
     <set>
-      <if test="movieName != null">
-        movie_name = #{movieName,jdbcType=VARCHAR},
+      <if test="year != null">
+        `year` = #{year,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
+      <if test="name != null">
+        `name` = #{name,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.bhu19.movie.reco.model.po.MovieInfoPO">
+  <update id="updateByPrimaryKey" parameterType="com.bhu19.movie.reco.model.MovieInfoPO">
     update movie_info
-    set movie_name = #{movieName,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=BIGINT}
+    set `year` = #{year,jdbcType=INTEGER},
+        `name` = #{name,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

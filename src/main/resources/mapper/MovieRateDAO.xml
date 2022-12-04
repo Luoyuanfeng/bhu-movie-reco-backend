@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bhu19.movie.reco.dao.MovieRateDAO">
+  <resultMap id="BaseResultMap" type="com.bhu19.movie.reco.model.MovieRatePO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="Cust_Id" jdbcType="INTEGER" property="custId" />
+    <result column="Rating" jdbcType="REAL" property="rating" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="Movie_Id" jdbcType="INTEGER" property="movieId" />
+    <result column="movie_count" jdbcType="REAL" property="movieCount" />
+    <result column="user_rating_mean" jdbcType="REAL" property="userRatingMean" />
+    <result column="user_count" jdbcType="REAL" property="userCount" />
+    <result column="movie_rating_mean" jdbcType="REAL" property="movieRatingMean" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="day" jdbcType="INTEGER" property="day" />
+    <result column="movie_year" jdbcType="REAL" property="movieYear" />
+    <result column="year_gap" jdbcType="REAL" property="yearGap" />
+    <result column="watched_movie_lists" jdbcType="LONGVARCHAR" property="watchedMovieLists" />
+    <result column="rating_lists" jdbcType="LONGVARCHAR" property="ratingLists" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, Cust_Id, Rating, `date`, Movie_Id, movie_count, user_rating_mean, user_count, 
+    movie_rating_mean, `year`, `month`, `day`, movie_year, year_gap, watched_movie_lists, rating_lists
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from movie_rate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByCustId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from movie_rate
+    where Cust_id = #{custId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from movie_rate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.MovieRatePO" useGeneratedKeys="true">
+    insert into movie_rate (Cust_Id, Rating, `date`, 
+      Movie_Id, movie_count, user_rating_mean, 
+      user_count, movie_rating_mean, `year`, 
+      `month`, `day`, movie_year, 
+      year_gap, watched_movie_lists, rating_lists
+      )
+    values (#{custId,jdbcType=INTEGER}, #{rating,jdbcType=REAL}, #{date,jdbcType=DATE}, 
+      #{movieId,jdbcType=INTEGER}, #{movieCount,jdbcType=REAL}, #{userRatingMean,jdbcType=REAL}, 
+      #{userCount,jdbcType=REAL}, #{movieRatingMean,jdbcType=REAL}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{day,jdbcType=INTEGER}, #{movieYear,jdbcType=REAL}, 
+      #{yearGap,jdbcType=REAL}, #{watchedMovieLists,jdbcType=LONGVARCHAR}, #{ratingLists,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.bhu19.movie.reco.model.MovieRatePO" useGeneratedKeys="true">
+    insert into movie_rate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="custId != null">
+        Cust_Id,
+      </if>
+      <if test="rating != null">
+        Rating,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="movieId != null">
+        Movie_Id,
+      </if>
+      <if test="movieCount != null">
+        movie_count,
+      </if>
+      <if test="userRatingMean != null">
+        user_rating_mean,
+      </if>
+      <if test="userCount != null">
+        user_count,
+      </if>
+      <if test="movieRatingMean != null">
+        movie_rating_mean,
+      </if>
+      <if test="year != null">
+        `year`,
+      </if>
+      <if test="month != null">
+        `month`,
+      </if>
+      <if test="day != null">
+        `day`,
+      </if>
+      <if test="movieYear != null">
+        movie_year,
+      </if>
+      <if test="yearGap != null">
+        year_gap,
+      </if>
+      <if test="watchedMovieLists != null">
+        watched_movie_lists,
+      </if>
+      <if test="ratingLists != null">
+        rating_lists,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="custId != null">
+        #{custId,jdbcType=INTEGER},
+      </if>
+      <if test="rating != null">
+        #{rating,jdbcType=REAL},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="movieId != null">
+        #{movieId,jdbcType=INTEGER},
+      </if>
+      <if test="movieCount != null">
+        #{movieCount,jdbcType=REAL},
+      </if>
+      <if test="userRatingMean != null">
+        #{userRatingMean,jdbcType=REAL},
+      </if>
+      <if test="userCount != null">
+        #{userCount,jdbcType=REAL},
+      </if>
+      <if test="movieRatingMean != null">
+        #{movieRatingMean,jdbcType=REAL},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        #{day,jdbcType=INTEGER},
+      </if>
+      <if test="movieYear != null">
+        #{movieYear,jdbcType=REAL},
+      </if>
+      <if test="yearGap != null">
+        #{yearGap,jdbcType=REAL},
+      </if>
+      <if test="watchedMovieLists != null">
+        #{watchedMovieLists,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ratingLists != null">
+        #{ratingLists,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bhu19.movie.reco.model.MovieRatePO">
+    update movie_rate
+    <set>
+      <if test="custId != null">
+        Cust_Id = #{custId,jdbcType=INTEGER},
+      </if>
+      <if test="rating != null">
+        Rating = #{rating,jdbcType=REAL},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=DATE},
+      </if>
+      <if test="movieId != null">
+        Movie_Id = #{movieId,jdbcType=INTEGER},
+      </if>
+      <if test="movieCount != null">
+        movie_count = #{movieCount,jdbcType=REAL},
+      </if>
+      <if test="userRatingMean != null">
+        user_rating_mean = #{userRatingMean,jdbcType=REAL},
+      </if>
+      <if test="userCount != null">
+        user_count = #{userCount,jdbcType=REAL},
+      </if>
+      <if test="movieRatingMean != null">
+        movie_rating_mean = #{movieRatingMean,jdbcType=REAL},
+      </if>
+      <if test="year != null">
+        `year` = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        `month` = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="day != null">
+        `day` = #{day,jdbcType=INTEGER},
+      </if>
+      <if test="movieYear != null">
+        movie_year = #{movieYear,jdbcType=REAL},
+      </if>
+      <if test="yearGap != null">
+        year_gap = #{yearGap,jdbcType=REAL},
+      </if>
+      <if test="watchedMovieLists != null">
+        watched_movie_lists = #{watchedMovieLists,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ratingLists != null">
+        rating_lists = #{ratingLists,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bhu19.movie.reco.model.MovieRatePO">
+    update movie_rate
+    set Cust_Id = #{custId,jdbcType=INTEGER},
+      Rating = #{rating,jdbcType=REAL},
+      `date` = #{date,jdbcType=DATE},
+      Movie_Id = #{movieId,jdbcType=INTEGER},
+      movie_count = #{movieCount,jdbcType=REAL},
+      user_rating_mean = #{userRatingMean,jdbcType=REAL},
+      user_count = #{userCount,jdbcType=REAL},
+      movie_rating_mean = #{movieRatingMean,jdbcType=REAL},
+      `year` = #{year,jdbcType=INTEGER},
+      `month` = #{month,jdbcType=INTEGER},
+      `day` = #{day,jdbcType=INTEGER},
+      movie_year = #{movieYear,jdbcType=REAL},
+      year_gap = #{yearGap,jdbcType=REAL},
+      watched_movie_lists = #{watchedMovieLists,jdbcType=LONGVARCHAR},
+      rating_lists = #{ratingLists,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

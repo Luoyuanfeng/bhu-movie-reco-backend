@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = {"com.bhu19.movie.reco.persistance.dao"})
+@MapperScan(basePackages = {"com.bhu19.movie.reco.dao"})
 public class BhuMovieRecoApplication {
 
     public static void main(String[] args) {
