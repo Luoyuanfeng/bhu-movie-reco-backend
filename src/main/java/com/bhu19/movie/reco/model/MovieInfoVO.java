@@ -21,12 +21,15 @@ public class MovieInfoVO implements Serializable {
 
     private String score;
 
+    private Float floatScore;
+
     public static MovieInfoVO from(MovieInfoPO po, MovieScore ms) {
         MovieInfoVO vo = new MovieInfoVO();
         vo.setId(po.getId());
         vo.setYear(po.getYear());
         vo.setName(po.getName());
         vo.setScore(String.valueOf(ms.getScore()));
+        vo.setFloatScore(ms.getScore());
         return vo;
     }
 }

@@ -15,10 +15,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -63,6 +60,7 @@ public class MovieRecoService {
         List<MovieInfoPO> movies = movieInfoDAO.selectByIdBatch(sortIds);
         List<MovieInfoVO> res = movies.stream()
                 .map(m -> MovieInfoVO.from(m, scoreMap.get(m.getId()))).collect(Collectors.toList());
+        res.sort(Comparator.comparingDouble(MovieInfoVO::getFloatScore).reversed());
         log.info("[recall] final movies={}", JSON.toJSONString(res));
         return res;
     }
@@ -81,6 +79,7 @@ public class MovieRecoService {
         List<MovieInfoPO> movies = movieInfoDAO.selectByIdBatch(sortIds);
         List<MovieInfoVO> res = movies.stream()
                 .map(m -> MovieInfoVO.from(m, scoreMap.get(m.getId()))).collect(Collectors.toList());
+        res.sort(Comparator.comparingDouble(MovieInfoVO::getFloatScore).reversed());
         log.info("[sort] final movies={}", JSON.toJSONString(res));
         return res;
     }
