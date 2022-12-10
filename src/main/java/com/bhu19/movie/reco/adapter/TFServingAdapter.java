@@ -3,12 +3,11 @@ package com.bhu19.movie.reco.adapter;
 import com.alibaba.fastjson.JSON;
 import com.bhu19.movie.reco.model.MovieRatePO;
 import com.bhu19.movie.reco.utils.Crawler;
+import com.bhu19.movie.reco.utils.RandomUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author: luoyuanfeng@meituan.com
@@ -42,23 +41,38 @@ public class TFServingAdapter {
     private static final String RECALL_URL = "http://127.0.0.1:port/v1/models/${MODEL_NAME}:predict";
     private static final String SORT_URL = "http://127.0.0.1:port/v1/models/${MODEL_NAME}:predict";
 
-    public List<Integer> recall(List<MovieRatePO> rates) {
-        log.info("[recall] rates={}", JSON.toJSONString(rates));
-        Crawler crawler = Crawler.of(RECALL_URL, false);
-        PredictReq<MovieRatePO> req = new PredictReq<>(rates);
-        String resp = crawler.doPost(JSON.toJSONString(req));
-        log.info("[recall] resp={}", resp);
-        PredictRes res = JSON.parseObject(resp, PredictRes.class);
-        return Optional.ofNullable(res).map(PredictRes::getPredictions).orElse(new ArrayList<>());
+    public PredictRes recall(List<MovieRatePO> rates) {
+        // for mock
+        List<Float> mockRes = RandomUtils.randomList(15000);
+        PredictRes res = new PredictRes();
+        res.setPredictions(mockRes);
+        res.setSorted(MovieScore.fromListAndSort(res.getPredictions(), 1000));
+        return res;
+
+//        log.info("[recall] rates={}", JSON.toJSONString(rates));
+//        Crawler crawler = Crawler.of(RECALL_URL, false);
+//        PredictReq<MovieRatePO> req = new PredictReq<>(rates);
+//        String resp = crawler.doPost(JSON.toJSONString(req));
+//        log.info("[recall] resp={}", resp);
+//        PredictRes res = JSON.parseObject(resp, PredictRes.class);
+//        res.setSorted(MovieScore.fromListAndSort(res.getPredictions(), 1000));
+//        return res;
     }
 
-    public List<Integer> sort(List<Integer> ids) {
-        log.info("[sort] ids={}", JSON.toJSONString(ids));
-        Crawler crawler = Crawler.of(SORT_URL, false);
-        PredictReq<Integer> req = new PredictReq<>(ids);
-        String resp = crawler.doPost(JSON.toJSONString(req));
-        log.info("[sort] resp={}", resp);
-        PredictRes res = JSON.parseObject(resp, PredictRes.class);
-        return Optional.ofNullable(res).map(PredictRes::getPredictions).orElse(new ArrayList<>());
+    public PredictRes sort(List<Float> scores) {
+        // for mock
+        PredictRes res = new PredictRes();
+        res.setPredictions(scores);
+        res.setSorted(MovieScore.fromListAndSort(res.getPredictions(), 30));
+        return res;
+
+//        log.info("[sort] scores={}", JSON.toJSONString(scores));
+//        Crawler crawler = Crawler.of(SORT_URL, false);
+//        PredictReq<Float> req = new PredictReq<>(scores);
+//        String resp = crawler.doPost(JSON.toJSONString(req));
+//        log.info("[sort] resp={}", resp);
+//        PredictRes res = JSON.parseObject(resp, PredictRes.class);
+//        res.setSorted(MovieScore.fromListAndSort(res.getPredictions(), 30));
+//        return res;
     }
 }

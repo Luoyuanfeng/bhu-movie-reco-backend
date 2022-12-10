@@ -17,5 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PredictRes {
 
-    private List<Integer> predictions;
+    private List<Float> predictions;
+
+    private List<MovieScore> sorted;
 }

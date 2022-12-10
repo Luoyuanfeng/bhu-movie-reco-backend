@@ -1,6 +1,7 @@
 package com.bhu19.movie.reco.controller;
 
 import com.bhu19.movie.reco.model.MovieInfoPO;
+import com.bhu19.movie.reco.model.MovieInfoVO;
 import com.bhu19.movie.reco.service.MovieRecoService;
 import com.bhu19.movie.reco.utils.ExceptionUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -29,16 +30,30 @@ public class RecoController {
     @Resource
     private MovieRecoService movieRecoService;
 
-    @GetMapping("/predict")
-    public HttpResp<?> predict(@RequestParam("custId") Integer custId) {
+    @GetMapping("/sort")
+    public HttpResp<?> sort(@RequestParam("custId") Integer custId) {
         try {
-            List<MovieInfoPO> movies = movieRecoService.predict(custId);
+            List<MovieInfoVO> movies = movieRecoService.sort(custId);
             return HttpResp.success(movies);
         } catch (IllegalArgumentException e) {
-            log.error("[predict] biz error custId={} e=", custId, e);
+            log.error("[sort] biz error custId={} e=", custId, e);
             return HttpResp.fail(BIZ_ERR_CODE, ExceptionUtils.parseException(e));
         } catch (Exception e) {
-            log.error("[predict] sys error custId={} e=", custId, e);
+            log.error("[sort] sys error custId={} e=", custId, e);
+            return HttpResp.fail(SYS_ERR_CODE, ExceptionUtils.parseException(e));
+        }
+    }
+
+    @GetMapping("/recall")
+    public HttpResp<?> recall(@RequestParam("custId") Integer custId) {
+        try {
+            List<MovieInfoVO> movies = movieRecoService.recall(custId);
+            return HttpResp.success(movies);
+        } catch (IllegalArgumentException e) {
+            log.error("[recall] biz error custId={} e=", custId, e);
+            return HttpResp.fail(BIZ_ERR_CODE, ExceptionUtils.parseException(e));
+        } catch (Exception e) {
+            log.error("[recall] sys error custId={} e=", custId, e);
             return HttpResp.fail(SYS_ERR_CODE, ExceptionUtils.parseException(e));
         }
     }
