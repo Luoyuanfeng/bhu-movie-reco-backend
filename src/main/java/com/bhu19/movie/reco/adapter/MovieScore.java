@@ -26,7 +26,7 @@ public class MovieScore {
             ms.setScore(scores.get(i));
             tmp.add(ms);
         }
-        tmp.sort(Comparator.comparingDouble(MovieScore::getScore));
+        tmp.sort(Comparator.comparingDouble(MovieScore::getScore).reversed());
         List<MovieScore> res = new ArrayList<>();
         for (int i = 0; i < tmp.size(); i++) {
             if (i >= topK) {
